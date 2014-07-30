@@ -8,6 +8,7 @@ public class Controller {
   DelaunayTriangulation delaunay;
   GifMaker gifMaker;
   Options options;
+  PApplet parentApplet;
   PngSequenceMaker pngSequenceMaker;
   RemoteControlCommunication communication;
   Triangulate triangulate;
@@ -20,6 +21,7 @@ public class Controller {
     artifacts = new ArrayList<Artifact>();
     triangulate = new Triangulate();
     triangles = new ArrayList<DelaunayTriangle>();
+    parentApplet = applet;
     createArtifacts();
   }
   private void createArtifacts() {
@@ -72,6 +74,22 @@ public class Controller {
       artifact.update(options);
     }
   }
+  public void triggerAction(char key) {
+    switch(key) {
+      case 'g':
+        toggleGifExport();
+        break;
+      case 'p':
+        togglePngExport();
+        break;
+      case 'r':
+        requestReset();
+        break;
+      case 's':
+        saveCurrentFrame();
+        break;
+    }
+  }
   public void update() {
     if(resetRequested) {
       reset();
@@ -120,14 +138,14 @@ public class Controller {
   public void finishPngExport() {
     exportingPng = false;
   }
-  public void toggleGifExport(PApplet applet) {
+  public void toggleGifExport() {
     exportingGif = !exportingGif;
     if(exportingGif) {
       if(gifMaker != null) {
         gifMaker.finish();
       }
       String formattedDate = getFormattedDate();
-      gifMaker = new GifMaker(applet, "screenshots/screenshot-" + formattedDate + "-" + frameCount + ".gif");
+      gifMaker = new GifMaker(parentApplet, "screenshots/screenshot-" + formattedDate + "-" + frameCount + ".gif");
       gifMaker.setRepeat(0);
     }
   }
