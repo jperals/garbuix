@@ -6,7 +6,6 @@ public class Artifact {
   public float distanceToClosestArtifact;
   public PVector position;
   public PVector speed;
-  private Options options;
   ArrayList<DelaunayTriangle> triangles;
   Artifact() {
     this(randomX(), randomY());
@@ -17,7 +16,6 @@ public class Artifact {
     closestArtifact = this;
     displayColor = baseColor;
     distanceToClosestArtifact = -1;
-    this.options = options;
     position = new PVector(x, y);
     speed = new PVector(0, 0);
     triangles = new ArrayList<DelaunayTriangle>();
@@ -115,4 +113,3 @@ class Point extends Artifact {
     popStyle();
   }
 }
-
