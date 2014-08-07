@@ -7,6 +7,7 @@ public class Controller {
   boolean resetRequested, exportingGif, exportingPng;
   DelaunayTriangulation delaunay;
   GifMaker gifMaker;
+  MutationActions actions;
   Options options;
   PApplet parentApplet;
   PngSequenceMaker pngSequenceMaker;
@@ -23,6 +24,7 @@ public class Controller {
     triangles = new ArrayList<DelaunayTriangle>();
     parentApplet = applet;
     createArtifacts();
+    actions = new MutationActions();
   }
   private void createArtifacts() {
     for(int i = 0; i < options.numberOfArtifacts; i++) {
@@ -75,7 +77,8 @@ public class Controller {
     }
   }
   public void triggerAction(char key) {
-    switch(key) {
+    actions.invokeByKey(key);
+    /*switch(key) {
       case 'g':
         toggleGifExport();
         break;
@@ -88,7 +91,7 @@ public class Controller {
       case 's':
         saveCurrentFrame();
         break;
-    }
+    }*/
   }
   public void update() {
     if(resetRequested) {
