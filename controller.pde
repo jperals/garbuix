@@ -77,8 +77,7 @@ public class Controller {
     }
   }
   public void triggerAction(char key) {
-    actions.invokeByKey(key);
-    /*switch(key) {
+    switch(key) {
       case 'g':
         toggleGifExport();
         break;
@@ -91,7 +90,9 @@ public class Controller {
       case 's':
         saveCurrentFrame();
         break;
-    }*/
+      default:
+        actions.invokeByKey(key);
+    }
   }
   public void update() {
     if(resetRequested) {
