@@ -6,7 +6,9 @@ interface Command {
 
 public class MutationActions {
   HashMap<Character, MutationAction> map;
-  MutationActions() {
+  Options options;
+  MutationActions(Options options1) {
+    options = options1;
     map = new HashMap<Character, MutationAction>();
     Command helpCommand = new Command() {
       public void runCommand() {
@@ -17,8 +19,22 @@ public class MutationActions {
         }
       }
     };
-    MutationAction helpAction = new MutationAction("help", "Show help", helpCommand);
+    MutationAction helpAction = new MutationAction("Help", "Show this text", helpCommand);
     map.put('h', helpAction);
+    Command attractionIncreaseCommand = new Command() {
+      public void runCommand() {
+        options.attraction += 0.1;
+      }
+    };
+    MutationAction attractionIncreaseAction = new MutationAction("Increase attraction", "Increase attraction between artifacts", attractionIncreaseCommand);
+    map.put('+', attractionIncreaseAction);
+    Command attractionDecreaseCommand = new Command() {
+      public void runCommand() {
+        options.attraction -= 0.1;
+      }
+    };
+    MutationAction attractionDecreaseAction = new MutationAction("Decrease attraction", "Decrease attraction between artifacts", attractionDecreaseCommand);
+    map.put('-', attractionDecreaseAction);
   }
   public void invokeByKey(char key) {
     MutationAction action = map.get(key);

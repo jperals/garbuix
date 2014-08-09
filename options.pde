@@ -40,4 +40,3 @@ public class Options {
     println("Number of artifacts: " + numberOfArtifacts);
   }
 }
-

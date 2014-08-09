@@ -24,7 +24,7 @@ public class Controller {
     triangles = new ArrayList<DelaunayTriangle>();
     parentApplet = applet;
     createArtifacts();
-    actions = new MutationActions();
+    actions = new MutationActions(options);
   }
   private void createArtifacts() {
     for(int i = 0; i < options.numberOfArtifacts; i++) {
