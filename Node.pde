@@ -26,21 +26,8 @@ public class Node {
   public void display() {}
   public void update(Options options) {
     triangles.clear();
-    PVector difference = differenceTo(closestNode);
-    PVector movement = new PVector(difference.x * options.attraction / options.mass, difference.y * options.attraction / options.mass);
-    if(options.inertia) {
-      acceleration = movement;
-      position.add(speed);
-      speed.add(acceleration);
-    }
-    else {
-      movement.mult(100);
-      position.add(movement);
-    }
-    constrain(position.x, options.canvasStart.x, options.canvasEnd.x);
-    constrain(position.y, options.canvasStart.y, options.canvasEnd.y);
-    float lerpAmount = 0.5/distanceToClosestNode;
-    secondaryColor = lerpColor(secondaryColor, closestNode.secondaryColor, lerpAmount);
+    updatePosition(options);
+    updateColors();
   }
   public PVector differenceTo(Node node) {
     return new PVector(node.position.x - position.x, node.position.y - position.y);
@@ -99,6 +86,26 @@ public class Node {
       popMatrix();
       popStyle();
     }
+  }
+  private void updateColors() {
+    float lerpAmount = 0.5/distanceToClosestNode;
+    color intermediateSecondaryColor = myColorLerp(secondaryColor, closestNode.secondaryColor, lerpAmount);
+    secondaryColor = intermediateSecondaryColor;
+  }
+  private void updatePosition(Options options) {
+    PVector difference = differenceTo(closestNode);
+    PVector movement = new PVector(difference.x * options.attraction / options.mass, difference.y * options.attraction / options.mass);
+    if(options.inertia) {
+      acceleration = movement;
+      position.add(speed);
+      speed.add(acceleration);
+    }
+    else {
+      movement.mult(100);
+      position.add(movement);
+    }
+    constrain(position.x, options.canvasStart.x, options.canvasEnd.x);
+    constrain(position.y, options.canvasStart.y, options.canvasEnd.y);
   }
 }
 
