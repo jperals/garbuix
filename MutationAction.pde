@@ -113,6 +113,14 @@ public class MutationActions {
     MutationAction toggleVoronoiAction = new MutationAction("Toggle Voronoi diagram", "Toggle the visualization of the Voronoi diagram", toggleVoronoiCommand);
     map.put('v', toggleVoronoiAction);
     
+    Command numberOfVoronoiPolygonsCycleCommand = new Command() {
+      public void runCommand() {
+        options.lerpLevels = (options.lerpLevels + 1) % options.maxLerpLevels;
+        println("options.lerpLevels: " + options.lerpLevels);
+      }
+    };
+    MutationAction numberOfVoronoiPolygonsCycleAction = new MutationAction("Cycle number of Voronoi polygons", "Change the number of concentrical Voronoi polygons at each artifact's position", numberOfVoronoiPolygonsCycleCommand);
+    map.put('V', numberOfVoronoiPolygonsCycleAction);
   }
   public void invokeByKey(char key) {
     MutationAction action = map.get(key);
