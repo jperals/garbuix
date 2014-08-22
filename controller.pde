@@ -67,7 +67,7 @@ public class Controller {
         node.display();
       }
       if(options.drawLine && closestNode != null) {
-        color lineColor = lerpColor(node.baseColor, closestNode.baseColor, 0.5);
+        color lineColor = lerpColor(node.primaryColor, closestNode.primaryColor, 0.5);
         pushStyle();
         stroke(lineColor);
         line(node.position.x, node.position.y, closestNode.position.x, closestNode.position.y);

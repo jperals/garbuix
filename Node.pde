@@ -1,8 +1,8 @@
 public class Node {
   public PVector acceleration;
-  public color baseColor;
+  public color primaryColor;
   public Node closestNode;
-  public color displayColor;
+  public color secondaryColor;
   public float distanceToClosestNode;
   public PVector position;
   public PVector speed;
@@ -12,9 +12,9 @@ public class Node {
   }
   Node(float x, float y) {
     acceleration = new PVector(0, 0);
-    baseColor = randomColor();
+    primaryColor = randomColor();
     closestNode = this;
-    displayColor = baseColor;
+    secondaryColor = primaryColor;
     distanceToClosestNode = -1;
     position = new PVector(x, y);
     speed = new PVector(0, 0);
@@ -40,7 +40,7 @@ public class Node {
     constrain(position.x, options.canvasStart.x, options.canvasEnd.x);
     constrain(position.y, options.canvasStart.y, options.canvasEnd.y);
     float lerpAmount = 0.5/distanceToClosestNode;
-    displayColor = lerpColor(displayColor, closestNode.displayColor, lerpAmount);
+    secondaryColor = lerpColor(secondaryColor, closestNode.secondaryColor, lerpAmount);
   }
   public PVector differenceTo(Node node) {
     return new PVector(node.position.x - position.x, node.position.y - position.y);
@@ -71,7 +71,7 @@ public class Node {
     if(nCircumcenters > 2) {
       pushStyle();
       if(!lerp) {
-        fill(displayColor);
+        fill(secondaryColor);
       }
       noStroke();
       pushMatrix();
@@ -82,7 +82,7 @@ public class Node {
         float lerpAmount = float(i)/lerpLevels;
         pushStyle();
         if(lerp) {
-          fill(lerpColor(baseColor, displayColor, lerpAmount));
+          fill(lerpColor(primaryColor, secondaryColor, lerpAmount));
         }
         pushMatrix();
         scale(float(i)/lerpLevels);
@@ -108,7 +108,7 @@ class Point extends Node {
   }
   public void display() {
     pushStyle();
-    stroke(displayColor);
+    stroke(secondaryColor);
     point(position.x, position.y);
     popStyle();
   }
