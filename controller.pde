@@ -50,7 +50,7 @@ public class Controller {
         int nTriangles = triangles.size();
         for (int j = 0; j <nTriangles; j++) {
           DelaunayTriangle triangle = (DelaunayTriangle)triangles.get(j);
-          if(triangle.a1 == artifact || triangle.a2 == artifact || triangle.a3 == artifact) {
+          if(triangle.n1 == artifact || triangle.n2 == artifact || triangle.n3 == artifact) {
             artifact.addTriangle(triangle);
           }
         }

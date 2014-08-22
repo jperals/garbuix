@@ -142,10 +142,10 @@ public class Triangulate {
       vertex list. The supertriangle is the first triangle in
       the triangle list.
     */
-    Node a1 = new Node( xmid - 2.0f * dmax, ymid - dmax);
-    Node a2 = new Node( xmid, ymid + 2.0f * dmax);
-    Node a3 = new Node( xmid + 2.0f * dmax, ymid - dmax);
-    DelaunayTriangle superTriangle = new DelaunayTriangle(a1, a2, a3);
+    Node n1 = new Node( xmid - 2.0f * dmax, ymid - dmax);
+    Node n2 = new Node( xmid, ymid + 2.0f * dmax);
+    Node n3 = new Node( xmid + 2.0f * dmax, ymid - dmax);
+    DelaunayTriangle superTriangle = new DelaunayTriangle(n1, n2, n3);
     triangles.add(superTriangle);
     
     /*
@@ -181,9 +181,9 @@ public class Triangulate {
           complete.add(t);
         }
         if (inside) {
-          edges.add(new Edge(t.a1, t.a2));
-          edges.add(new Edge(t.a2, t.a3));
-          edges.add(new Edge(t.a3, t.a1));
+          edges.add(new Edge(t.n1, t.n2));
+          edges.add(new Edge(t.n2, t.n3));
+          edges.add(new Edge(t.n3, t.n1));
           triangles.remove(j);
           t = null;
         }
@@ -228,7 +228,7 @@ public class Triangulate {
           continue;
         }
         //println(p);
-        DelaunayTriangle triangle = new DelaunayTriangle(e.a1, e.a2, node);
+        DelaunayTriangle triangle = new DelaunayTriangle(e.n1, e.n2, node);
         triangles.add(triangle);
         /*if(!triangle.sharesVertex(superTriangle)) {
           node.addTriangle(triangle);
