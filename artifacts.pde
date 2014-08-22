@@ -1,16 +1,16 @@
-public class Artifact {
+public class Node {
   public PVector acceleration;
   public color baseColor;
-  public Artifact closestArtifact;
+  public Node closestArtifact;
   public color displayColor;
   public float distanceToClosestArtifact;
   public PVector position;
   public PVector speed;
   ArrayList<DelaunayTriangle> triangles;
-  Artifact() {
+  Node() {
     this(randomX(), randomY());
   }
-  Artifact(float x, float y) {
+  Node(float x, float y) {
     acceleration = new PVector(0, 0);
     baseColor = randomColor();
     closestArtifact = this;
@@ -42,18 +42,18 @@ public class Artifact {
     float lerpAmount = 0.5/distanceToClosestArtifact;
     displayColor = lerpColor(displayColor, closestArtifact.displayColor, lerpAmount);
   }
-  public PVector differenceTo(Artifact artifact) {
+  public PVector differenceTo(Node artifact) {
     return new PVector(artifact.position.x - position.x, artifact.position.y - position.y);
   }
-  public float distanceTo(Artifact artifact) {
+  public float distanceTo(Node artifact) {
     return dist(position.x, position.y, artifact.position.x, artifact.position.y);
   }
-  public Artifact getClosestArtifact(ArrayList<Artifact> artifacts) {
+  public Node getClosestArtifact(ArrayList<Node> artifacts) {
     float minimumDistanceFound = -1;
-    Artifact closestArtifactFound = null;
+    Node closestArtifactFound = null;
     int numberOfArtifacts = artifacts.size();
     for(int i = 0; i < numberOfArtifacts; i++) {
-      Artifact artifact = artifacts.get(i);
+      Node artifact = artifacts.get(i);
       float distance = distanceTo(artifact);
       if(artifact != this && (minimumDistanceFound == -1 || closestArtifactFound == null || distance < minimumDistanceFound)) {
         minimumDistanceFound = distance;
@@ -102,7 +102,7 @@ public class Artifact {
   }
 }
 
-class Point extends Artifact {
+class Point extends Node {
   Point() {
     super();
   }

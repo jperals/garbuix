@@ -2,7 +2,7 @@ import gifAnimation.*;
 import java.util.Date;
 
 public class Controller {
-  ArrayList<Artifact> artifacts;
+  ArrayList<Node> artifacts;
   ArrayList<DelaunayTriangle> triangles;
   boolean resetRequested, exportingGif, exportingPng;
   DelaunayTriangulation delaunay;
@@ -19,7 +19,7 @@ public class Controller {
     delaunay = new DelaunayTriangulation();
     options = new Options();
     communication = new RemoteControlCommunication(this, options);
-    artifacts = new ArrayList<Artifact>();
+    artifacts = new ArrayList<Node>();
     triangulate = new Triangulate();
     triangles = new ArrayList<DelaunayTriangle>();
     parentApplet = applet;
@@ -28,7 +28,7 @@ public class Controller {
   }
   private void createArtifacts() {
     for(int i = 0; i < options.numberOfArtifacts; i++) {
-      Artifact artifact = new Point();
+      Node artifact = new Point();
       artifacts.add(artifact);
     }
   }
@@ -45,7 +45,7 @@ public class Controller {
     }
     int nArtifacts = artifacts.size();
     for(int i = 0; i < nArtifacts; i++) {
-      Artifact artifact = artifacts.get(i);
+      Node artifact = artifacts.get(i);
       if(options.voronoi ) {
         int nTriangles = triangles.size();
         for (int j = 0; j <nTriangles; j++) {
@@ -61,8 +61,8 @@ public class Controller {
       delaunay.drawTriangles(triangles);
     }
     for(int i = 0; i < nArtifacts; i++) {
-      Artifact artifact = artifacts.get(i);
-      Artifact closestArtifact = artifact.getClosestArtifact(artifacts);
+      Node artifact = artifacts.get(i);
+      Node closestArtifact = artifact.getClosestArtifact(artifacts);
       if(options.drawArtifacts) {
         artifact.display();
       }
