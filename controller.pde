@@ -134,7 +134,6 @@ public class Controller {
   public void startPngExport() {
     exportingPng = true;
     if(pngSequenceMaker == null) {
-      Date date = new Date();
       String formattedDate = getFormattedDate();   
       pngSequenceMaker = new PngSequenceMaker("screenshots/capture-" + formattedDate + "-######");
     }
