@@ -1,6 +1,6 @@
 public class DelaunayTriangle {
 
-  public Artifact a1, a2, a3;
+  public Node a1, a2, a3;
   
   public PVector p1, p2, p3;
   
@@ -16,7 +16,7 @@ public class DelaunayTriangle {
     this.p3 = p3;
   }
   
-  public DelaunayTriangle(Artifact a1, Artifact a2, Artifact a3) {
+  public DelaunayTriangle(Node a1, Node a2, Node a3) {
     this.a1 = a1;
     this.a2 = a2;
     this.a3 = a3;
@@ -32,4 +32,3 @@ public class DelaunayTriangle {
   }
   
 }
-

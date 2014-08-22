@@ -53,7 +53,7 @@ public class MutationActions {
         println("Attraction: " + options.attraction);
       }
     };
-    MutationAction attractionIncreaseAction = new MutationAction("Increase attraction", "Increase attraction between artifacts", attractionIncreaseCommand);
+    MutationAction attractionIncreaseAction = new MutationAction("Increase attraction", "Increase attraction between nodes", attractionIncreaseCommand);
     map.put('a', attractionIncreaseAction);
     
     Command attractionDecreaseCommand = new Command() {
@@ -62,7 +62,7 @@ public class MutationActions {
         println("Attraction: " + options.attraction);
       }
     };
-    MutationAction attractionDecreaseAction = new MutationAction("Decrease attraction", "Decrease attraction between artifacts", attractionDecreaseCommand);
+    MutationAction attractionDecreaseAction = new MutationAction("Decrease attraction", "Decrease attraction between nodes", attractionDecreaseCommand);
     map.put('A', attractionDecreaseAction);
     
     Command toggleClearCommand = new Command() {
@@ -86,23 +86,23 @@ public class MutationActions {
         options.drawLine = !options.drawLine;
       }
     };
-    MutationAction toggleLineAction = new MutationAction("Toggle line", "Toggle the visualization of one line from each artifact to its closest neighbour", toggleLineCommand);
+    MutationAction toggleLineAction = new MutationAction("Toggle line", "Toggle the visualization of one line from each node to its closest neighbour", toggleLineCommand);
     map.put('l', toggleLineAction);
     
-    Command numberOfArtifactsIncreaseCommand = new Command() {
+    Command numberOfNodesIncreaseCommand = new Command() {
       public void runCommand() {
-        options.numberOfArtifacts += 1;
+        options.numberOfNodes += 1;
       }
     };
-    MutationAction numberOfArticatsIncreaseAction = new MutationAction("Increase number of artifacts", "Increase number of artifacts", numberOfArtifactsIncreaseCommand);
-    map.put('n', numberOfArticatsIncreaseAction);
+    MutationAction numberOfNodesIncreaseAction = new MutationAction("Increase number of nodes", "Increase number of nodes", numberOfNodesIncreaseCommand);
+    map.put('n', numberOfNodesIncreaseAction);
     
-    Command numberOfArtifactsDecreaseCommand = new Command() {
+    Command numberOfNodesDecreaseCommand = new Command() {
       public void runCommand() {
-        options.numberOfArtifacts -= 1;
+        options.numberOfNodes -= 1;
       }
     };
-    MutationAction numberOfArticatsDecreaseAction = new MutationAction("Decrease number of artifacts", "Decrease number of artifacts", numberOfArtifactsDecreaseCommand);
+    MutationAction numberOfArticatsDecreaseAction = new MutationAction("Decrease number of nodes", "Decrease number of nodes", numberOfNodesDecreaseCommand);
     map.put('N', numberOfArticatsDecreaseAction);
     
     Command toggleVoronoiCommand = new Command() {
@@ -119,7 +119,7 @@ public class MutationActions {
         println("options.lerpLevels: " + options.lerpLevels);
       }
     };
-    MutationAction numberOfVoronoiPolygonsCycleAction = new MutationAction("Cycle number of Voronoi polygons", "Change the number of concentrical Voronoi polygons at each artifact's position", numberOfVoronoiPolygonsCycleCommand);
+    MutationAction numberOfVoronoiPolygonsCycleAction = new MutationAction("Cycle number of Voronoi polygons", "Change the number of concentrical Voronoi polygons at each node's position", numberOfVoronoiPolygonsCycleCommand);
     map.put('V', numberOfVoronoiPolygonsCycleAction);
   }
   public void invokeByKey(char key) {

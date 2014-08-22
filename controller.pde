@@ -2,7 +2,7 @@ import gifAnimation.*;
 import java.util.Date;
 
 public class Controller {
-  ArrayList<Node> artifacts;
+  ArrayList<Node> nodes;
   ArrayList<DelaunayTriangle> triangles;
   boolean resetRequested, exportingGif, exportingPng;
   DelaunayTriangulation delaunay;
@@ -19,17 +19,17 @@ public class Controller {
     delaunay = new DelaunayTriangulation();
     options = new Options();
     communication = new RemoteControlCommunication(this, options);
-    artifacts = new ArrayList<Node>();
+    nodes = new ArrayList<Node>();
     triangulate = new Triangulate();
     triangles = new ArrayList<DelaunayTriangle>();
     parentApplet = applet;
-    createArtifacts();
+    createNodes();
     actions = new MutationActions(options);
   }
-  private void createArtifacts() {
-    for(int i = 0; i < options.numberOfArtifacts; i++) {
+  private void createNodes() {
+    for(int i = 0; i < options.numberOfNodes; i++) {
       Node artifact = new Point();
-      artifacts.add(artifact);
+      nodes.add(artifact);
     }
   }
   public void draw() {
@@ -41,11 +41,11 @@ public class Controller {
       popStyle();
     }
     if(options.delaunay || options.voronoi) {
-      triangles = triangulate.triangulate(artifacts);
+      triangles = triangulate.triangulate(nodes);
     }
-    int nArtifacts = artifacts.size();
-    for(int i = 0; i < nArtifacts; i++) {
-      Node artifact = artifacts.get(i);
+    int nNodes = nodes.size();
+    for(int i = 0; i < nNodes; i++) {
+      Node artifact = nodes.get(i);
       if(options.voronoi ) {
         int nTriangles = triangles.size();
         for (int j = 0; j <nTriangles; j++) {
@@ -60,20 +60,20 @@ public class Controller {
    if(options.delaunay) {
       delaunay.drawTriangles(triangles);
     }
-    for(int i = 0; i < nArtifacts; i++) {
-      Node artifact = artifacts.get(i);
-      Node closestArtifact = artifact.getClosestArtifact(artifacts);
-      if(options.drawArtifacts) {
-        artifact.display();
+    for(int i = 0; i < nNodes; i++) {
+      Node node = nodes.get(i);
+      Node closestNode = node.getClosestNode(nodes);
+      if(options.drawNodes) {
+        node.display();
       }
-      if(options.drawLine && closestArtifact != null) {
-        color lineColor = lerpColor(artifact.baseColor, closestArtifact.baseColor, 0.5);
+      if(options.drawLine && closestNode != null) {
+        color lineColor = lerpColor(node.baseColor, closestNode.baseColor, 0.5);
         pushStyle();
         stroke(lineColor);
-        line(artifact.position.x, artifact.position.y, closestArtifact.position.x, closestArtifact.position.y);
+        line(node.position.x, node.position.y, closestNode.position.x, closestNode.position.y);
         popStyle();
       }
-      artifact.update(options);
+      node.update(options);
     }
   }
   public void triggerAction(char key) {
@@ -105,14 +105,14 @@ public class Controller {
     if(exportingPng && frameCount % options.exportFrameDelay == 0) {
       pngSequenceMaker.saveCurrentFrame();
     }
-    int nArtifacts = artifacts.size();
-    if(nArtifacts < options.numberOfArtifacts) {
-      artifacts.add(new Point());
+    int nNodes = nodes.size();
+    if(nNodes < options.numberOfNodes) {
+      nodes.add(new Point());
     }
-    else if(nArtifacts > options.numberOfArtifacts) {
-      int index = (int)random(nArtifacts);
-      constrain(index, 0, nArtifacts - 1);
-      artifacts.remove(index);
+    else if(nNodes > options.numberOfNodes) {
+      int index = (int)random(nNodes);
+      constrain(index, 0, nNodes - 1);
+      nodes.remove(index);
     }
   }
   private String getFormattedDate() {
@@ -121,8 +121,8 @@ public class Controller {
       return formattedDate;
   }
   public void reset() {
-    artifacts.clear();
-    createArtifacts();
+    nodes.clear();
+    createNodes();
   }
   public void requestReset() {
     resetRequested = true;

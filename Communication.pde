@@ -30,8 +30,8 @@ public class RemoteControlCommunication {
       connect(ipAddress);
     }
     if(msg.checkAddrPattern("/artifacts")) {
-      options.numberOfArtifacts = (int)msg.get(0).floatValue();
-      println("Number of artifacts: " + options.numberOfArtifacts);
+      options.numberOfNodes = (int)msg.get(0).floatValue();
+      println("Number of nodes: " + options.numberOfNodes);
     }
     if(msg.checkAddrPattern("/attraction")) {
       options.attraction = msg.get(0).floatValue();
@@ -67,8 +67,8 @@ public class RemoteControlCommunication {
       println("Draw lines: " + options.drawLine);
     }
     else if(msg.checkAddrPattern("/points")) {
-      options.drawArtifacts = msg.get(0).floatValue() == 1;
-      println("Draw artifacts: " + options.drawArtifacts);
+      options.drawNodes = msg.get(0).floatValue() == 1;
+      println("Draw nodes: " + options.drawNodes);
     }
     else if(msg.checkAddrPattern("/delay")) {
       options.exportFrameDelay = (int)msg.get(0).floatValue();
@@ -106,10 +106,10 @@ public class RemoteControlCommunication {
     }
   }
   void sendAllTo(NetAddress address) {
-    sendMessage("artifacts", options.numberOfArtifacts, address);
+    sendMessage("nodes", options.numberOfNodes, address);
     sendMessage("attraction", options.attraction, address);
     sendMessage("inertia", options.inertia, address);
-    sendMessage("points", options.drawArtifacts, address);
+    sendMessage("points", options.drawNodes, address);
     sendMessage("lines", options.drawLine, address);
     sendMessage("trace", !options.clear, address);
     sendMessage("delaunay", options.delaunay, address);
@@ -149,4 +149,3 @@ public class RemoteControlCommunication {
     oscP5.send(msg, address);
   }
 }
-

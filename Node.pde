@@ -1,9 +1,9 @@
 public class Node {
   public PVector acceleration;
   public color baseColor;
-  public Node closestArtifact;
+  public Node closestNode;
   public color displayColor;
-  public float distanceToClosestArtifact;
+  public float distanceToClosestNode;
   public PVector position;
   public PVector speed;
   ArrayList<DelaunayTriangle> triangles;
@@ -13,9 +13,9 @@ public class Node {
   Node(float x, float y) {
     acceleration = new PVector(0, 0);
     baseColor = randomColor();
-    closestArtifact = this;
+    closestNode = this;
     displayColor = baseColor;
-    distanceToClosestArtifact = -1;
+    distanceToClosestNode = -1;
     position = new PVector(x, y);
     speed = new PVector(0, 0);
     triangles = new ArrayList<DelaunayTriangle>();
@@ -26,7 +26,7 @@ public class Node {
   public void display() {}
   public void update(Options options) {
     triangles.clear();
-    PVector difference = differenceTo(closestArtifact);
+    PVector difference = differenceTo(closestNode);
     PVector movement = new PVector(difference.x * options.attraction / options.mass, difference.y * options.attraction / options.mass);
     if(options.inertia) {
       acceleration = movement;
@@ -39,30 +39,30 @@ public class Node {
     }
     constrain(position.x, options.canvasStart.x, options.canvasEnd.x);
     constrain(position.y, options.canvasStart.y, options.canvasEnd.y);
-    float lerpAmount = 0.5/distanceToClosestArtifact;
-    displayColor = lerpColor(displayColor, closestArtifact.displayColor, lerpAmount);
+    float lerpAmount = 0.5/distanceToClosestNode;
+    displayColor = lerpColor(displayColor, closestNode.displayColor, lerpAmount);
   }
-  public PVector differenceTo(Node artifact) {
-    return new PVector(artifact.position.x - position.x, artifact.position.y - position.y);
+  public PVector differenceTo(Node node) {
+    return new PVector(node.position.x - position.x, node.position.y - position.y);
   }
-  public float distanceTo(Node artifact) {
-    return dist(position.x, position.y, artifact.position.x, artifact.position.y);
+  public float distanceTo(Node node) {
+    return dist(position.x, position.y, node.position.x, node.position.y);
   }
-  public Node getClosestArtifact(ArrayList<Node> artifacts) {
+  public Node getClosestNode(ArrayList<Node> nodes) {
     float minimumDistanceFound = -1;
-    Node closestArtifactFound = null;
-    int numberOfArtifacts = artifacts.size();
-    for(int i = 0; i < numberOfArtifacts; i++) {
-      Node artifact = artifacts.get(i);
-      float distance = distanceTo(artifact);
-      if(artifact != this && (minimumDistanceFound == -1 || closestArtifactFound == null || distance < minimumDistanceFound)) {
+    Node closestNodeFound = null;
+    int numberOfNodes = nodes.size();
+    for(int i = 0; i < numberOfNodes; i++) {
+      Node node = nodes.get(i);
+      float distance = distanceTo(node);
+      if(node != this && (minimumDistanceFound == -1 || closestNodeFound == null || distance < minimumDistanceFound)) {
         minimumDistanceFound = distance;
-        closestArtifactFound = artifact;
+        closestNodeFound = node;
       }
     }
-    closestArtifact = closestArtifactFound;
-    distanceToClosestArtifact = minimumDistanceFound;
-    return closestArtifactFound;
+    closestNode = closestNodeFound;
+    distanceToClosestNode = minimumDistanceFound;
+    return closestNodeFound;
   }
   public void drawVoronoi(boolean lerp, int lerpLevels) {
     Voronoi voronoi = new Voronoi(position);

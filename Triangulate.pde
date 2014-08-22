@@ -1,5 +1,5 @@
 /*
- * From Processing wiki, modified to accept our "Artifact" type instead of PVector
+ * From Processing wiki, modified to accept our "Node" type instead of PVector
  * http://wiki.processing.org/w/Triangulation
  */
 import java.util.Collections;
@@ -26,9 +26,9 @@ public class Triangulate {
         return(0);
     }
   */
-  private class XComparator implements Comparator<Artifact> {
+  private class XComparator implements Comparator<Node> {
     
-    public int compare(Artifact p1, Artifact p2) {
+    public int compare(Node p1, Node p2) {
       if (p1.position.x < p2.position.x) {
         return -1;
       }
@@ -103,21 +103,21 @@ public class Triangulate {
     Returned is a list of triangular faces in the ArrayList triangles 
     These triangles are arranged in a consistent clockwise order.
   */
-  public ArrayList<DelaunayTriangle> triangulate( ArrayList<Artifact> artifacts ) {
+  public ArrayList<DelaunayTriangle> triangulate( ArrayList<Node> nodes ) {
   
     // sort vertex array in increasing x values
-    Collections.sort(artifacts, new XComparator());
+    Collections.sort(nodes, new XComparator());
         
     /*
       Find the maximum and minimum vertex bounds.
       This is to allow calculation of the bounding triangle
     */
-    float xmin = artifacts.get(0).position.x;
-    float ymin = artifacts.get(0).position.y;
+    float xmin = nodes.get(0).position.x;
+    float ymin = nodes.get(0).position.y;
     float xmax = xmin;
     float ymax = ymin;
     
-    Iterator<Artifact> pIter = artifacts.iterator();
+    Iterator<Node> pIter = nodes.iterator();
     while (pIter.hasNext()) {
       PVector position = (PVector)pIter.next().position;
       if (position.x < xmin) xmin = position.x;
@@ -142,9 +142,9 @@ public class Triangulate {
       vertex list. The supertriangle is the first triangle in
       the triangle list.
     */
-    Artifact a1 = new Artifact( xmid - 2.0f * dmax, ymid - dmax);
-    Artifact a2 = new Artifact( xmid, ymid + 2.0f * dmax);
-    Artifact a3 = new Artifact( xmid + 2.0f * dmax, ymid - dmax);
+    Node a1 = new Node( xmid - 2.0f * dmax, ymid - dmax);
+    Node a2 = new Node( xmid, ymid + 2.0f * dmax);
+    Node a3 = new Node( xmid + 2.0f * dmax, ymid - dmax);
     DelaunayTriangle superTriangle = new DelaunayTriangle(a1, a2, a3);
     triangles.add(superTriangle);
     
@@ -152,11 +152,11 @@ public class Triangulate {
       Include each point one at a time into the existing mesh
     */
     ArrayList<Edge> edges = new ArrayList<Edge>();
-    pIter = artifacts.iterator();
+    pIter = nodes.iterator();
     while (pIter.hasNext()) {
     
-      Artifact artifact = pIter.next();
-      PVector p = artifact.position;
+      Node node = pIter.next();
+      PVector p = node.position;
       
       edges.clear();
       
@@ -188,7 +188,7 @@ public class Triangulate {
           t = null;
         }
         /*if((t.p1.x == p.x && t.p1.y == p.y) || (t.p2.x == p.x && t.p2.y == p.y) || (t.p3.x == p.x && t.p3.y == p.y) {
-          artifact.addTriangle(t);
+          node.addTriangle(t);
         }*/
       }
 
@@ -228,10 +228,10 @@ public class Triangulate {
           continue;
         }
         //println(p);
-        DelaunayTriangle triangle = new DelaunayTriangle(e.a1, e.a2, artifact);
+        DelaunayTriangle triangle = new DelaunayTriangle(e.a1, e.a2, node);
         triangles.add(triangle);
         /*if(!triangle.sharesVertex(superTriangle)) {
-          artifact.addTriangle(triangle);
+          node.addTriangle(triangle);
         }*/
       }
       
@@ -253,4 +253,3 @@ public class Triangulate {
   }
   
 }
-

@@ -1,6 +1,6 @@
 public class Edge {
   
-  public Artifact a1, a2;
+  public Node a1, a2;
   public PVector p1, p2;
   
   public Edge() {
@@ -15,7 +15,7 @@ public class Edge {
     this.p2 = p2;
   }
   
-  public Edge(Artifact a1, Artifact a2) {
+  public Edge(Node a1, Node a2) {
     this.a1 = a1;
     this.a2 = a2;
     this.p1 = a1.position;
@@ -23,4 +23,3 @@ public class Edge {
   }
   
 }
-
