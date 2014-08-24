@@ -28,8 +28,11 @@ public class Controller {
   }
   private void createNodes() {
     for(int i = 0; i < options.numberOfNodes; i++) {
-      Node artifact = new Point();
-      nodes.add(artifact);
+      Node node = new Node();
+      node.attraction = options.attraction;
+      node.inertia = options.inertia;
+      node.mass = options.mass;
+      nodes.add(node);
     }
   }
   public void draw() {

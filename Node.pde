@@ -1,11 +1,14 @@
 public class Node {
-  public PVector acceleration;
-  public color primaryColor;
+  public boolean inertia;
+  public color primaryColor,
+               secondaryColor;
+  public float attraction,
+               distanceToClosestNode,
+               mass;
   public Node closestNode;
-  public color secondaryColor;
-  public float distanceToClosestNode;
-  public PVector position;
-  public PVector speed;
+  public PVector acceleration,
+                 position,
+                 speed;
   ArrayList<DelaunayTriangle> triangles;
   Node() {
     this(randomX(), randomY());
@@ -88,14 +91,14 @@ public class Node {
     }
   }
   private void updateColors() {
-    float lerpAmount = 0.5/distanceToClosestNode;
-    color intermediateSecondaryColor = myColorLerp(secondaryColor, closestNode.secondaryColor, lerpAmount);
+    float lerpAmount = 0.5/(distanceToClosestNode/10);
+    color intermediateSecondaryColor = lerpColor(secondaryColor, closestNode.secondaryColor, lerpAmount);
     secondaryColor = intermediateSecondaryColor;
   }
   private void updatePosition(Options options) {
     PVector difference = differenceTo(closestNode);
-    PVector movement = new PVector(difference.x * options.attraction / options.mass, difference.y * options.attraction / options.mass);
-    if(options.inertia) {
+    PVector movement = new PVector(difference.x * attraction / mass, difference.y * attraction / mass);
+    if(inertia) {
       acceleration = movement;
       position.add(speed);
       speed.add(acceleration);
