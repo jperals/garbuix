@@ -76,7 +76,9 @@ public class Controller {
         line(node.position.x, node.position.y, closestNode.position.x, closestNode.position.y);
         popStyle();
       }
-      node.update(options);
+      node.update();
+      node.position.x = constrain(node.position.x, options.canvasStart.x, options.canvasEnd.x);
+      node.position.y = constrain(node.position.y, options.canvasStart.y, options.canvasEnd.y);
     }
   }
   public void triggerAction(char key) {

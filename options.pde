@@ -9,7 +9,7 @@ public class Options {
   public int lerpLevels;
   public int maxLerpLevels = 5;
   public int minNumberOfNodes = 100;
-  public int maxNumberOfNodes = 600;
+  public int maxNumberOfNodes = 500;
   public int numberOfNodes;
   
   Options() {
@@ -29,9 +29,9 @@ public class Options {
     lerp = true;//random(1) < 0.5;
     attraction = random(minAttraction, maxAttraction);
     mass = 5000;
-    canvasStart = new PVector(-w*1.25, -h*1.25);
+    canvasStart = new PVector(-w*0.25, -h*0.25);
     canvasEnd = new PVector(w*1.25, h*1.25);
-    lerpLevels = 2;//lerp ? 1 : (int)random(maxLerpLevels);
+    lerpLevels = 1;//lerp ? 1 : (int)random(maxLerpLevels);
     numberOfNodes = int(random(minNumberOfNodes, maxNumberOfNodes));
     voronoi = true;//random(1) < 0.5;
     println("Attraction: " + attraction);

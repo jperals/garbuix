@@ -27,9 +27,9 @@ public class Node {
     triangles.add(t);
   }
   public void display() {}
-  public void update(Options options) {
+  public void update() {
     triangles.clear();
-    updatePosition(options);
+    updatePosition();
     updateColors();
   }
   public PVector differenceTo(Node node) {
@@ -95,7 +95,7 @@ public class Node {
     color intermediateSecondaryColor = lerpColor(secondaryColor, closestNode.secondaryColor, lerpAmount);
     secondaryColor = intermediateSecondaryColor;
   }
-  private void updatePosition(Options options) {
+  private void updatePosition() {
     PVector difference = differenceTo(closestNode);
     PVector movement = new PVector(difference.x * attraction / mass, difference.y * attraction / mass);
     if(inertia) {
@@ -107,8 +107,6 @@ public class Node {
       movement.mult(100);
       position.add(movement);
     }
-    constrain(position.x, options.canvasStart.x, options.canvasEnd.x);
-    constrain(position.y, options.canvasStart.y, options.canvasEnd.y);
   }
 }
 
