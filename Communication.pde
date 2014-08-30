@@ -20,6 +20,8 @@ public class RemoteControlCommunication {
   private void connect(String ipAddress) {
     NetAddress newAddress = new NetAddress(ipAddress, broadcastPort);
     remoteAddressList.add(newAddress);
+    OscMessage msg = new OscMessage("/connect");
+    oscP5.send(msg, newAddress);
     println("Connected with " + ipAddress + ".");
     sendAllTo(newAddress);
   }
@@ -29,11 +31,12 @@ public class RemoteControlCommunication {
     if(msg.addrPattern().equals("/connect") || !remoteAddressList.contains(ipAddress, broadcastPort)) {
       connect(ipAddress);
     }
-    if(msg.checkAddrPattern("/artifacts")) {
-      options.numberOfNodes = (int)msg.get(0).floatValue();
+    if(msg.checkAddrPattern("/nodes")) {
+      options.numberOfNodes = (int)msg.get(0).intValue();
       println("Number of nodes: " + options.numberOfNodes);
     }
     if(msg.checkAddrPattern("/attraction")) {
+      println("attraction: " + msg.get(0).floatValue());
       options.attraction = msg.get(0).floatValue();
       println("attraction: " + options.attraction);
     }
@@ -59,15 +62,25 @@ public class RemoteControlCommunication {
       println("Export frames: " + capture);
     }
     else if(msg.checkAddrPattern("/delaunay")) {
-      options.delaunay = msg.get(0).floatValue() == 1;
+      options.delaunay = msg.get(0).intValue() == 1;
       println("Draw Delaunay triangulation: " + options.delaunay);
     }
     else if(msg.checkAddrPattern("/lines")) {
-      options.drawLine = msg.get(0).floatValue() == 1;
+      try {
+        options.drawLine = msg.get(0).intValue() == 1;
+      }
+      catch(Exception exception) {
+        options.drawLine = msg.get(0).floatValue() == 1;
+      }
       println("Draw lines: " + options.drawLine);
     }
     else if(msg.checkAddrPattern("/points")) {
-      options.drawNodes = msg.get(0).floatValue() == 1;
+      try {
+        options.drawNodes = msg.get(0).intValue() == 1;
+      }
+      catch(Exception exception) {
+        options.drawNodes = msg.get(0).floatValue() == 1;
+      }
       println("Draw nodes: " + options.drawNodes);
     }
     else if(msg.checkAddrPattern("/delay")) {
@@ -75,20 +88,20 @@ public class RemoteControlCommunication {
       println("Delay between capture frames: " + options.exportFrameDelay);
     }
     else if(msg.checkAddrPattern("/inertia")) {
-      options.inertia = msg.get(0).floatValue() == 1;
+      options.inertia = msg.get(0).intValue() == 1;
       println("Inertia: " + options.inertia);
     }
     else if(msg.checkAddrPattern("/polygons")) {
-      options.lerpLevels = (int)msg.get(0).floatValue();
+      options.lerpLevels = (int)msg.get(0).intValue();
       options.lerp = options.lerpLevels > 0;  
       println("Lerp levels: " + options.lerpLevels);
     }
     else if(msg.checkAddrPattern("/trace")) {
-      options.clear = msg.get(0).floatValue() == 0;
+      options.clear = msg.get(0).intValue() == 0;
       println("Clear: " + options.clear);
     }
     else if(msg.checkAddrPattern("/voronoi")) {
-      options.voronoi = msg.get(0).floatValue() == 1;
+      options.voronoi = msg.get(0).intValue() == 1;
       println("Draw Voronoi tesselation: " + options.voronoi);
     }
     else if(msg.checkAddrPattern("/reset")) {

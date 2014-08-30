@@ -3,7 +3,7 @@ public class Options {
   public color backgroundColor;
   public float attraction, mass;
   private float minAttraction = -1;
-  private float maxAttraction = -0.5;
+  private float maxAttraction = 1;
   public PVector canvasStart, canvasEnd;
   public int exportFrameDelay, minExportFrameDelay = 1, maxExportFrameDelay = 300;
   public int lerpLevels;

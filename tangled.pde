@@ -1,7 +1,7 @@
 Controller controller;
 
 void setup() {
-  size(250, 250);
+  size(500, 500);
   controller = new Controller(this);
 }
 
@@ -13,4 +13,3 @@ void draw() {
 void keyPressed() {
   controller.triggerAction(key);
 }
-
