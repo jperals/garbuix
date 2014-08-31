@@ -1,5 +1,5 @@
 public class Options {
-  public boolean clear, delaunay, drawNodes, drawLine, lerp, inertia, voronoi;
+  public boolean clear, delaunay, drawNodes, drawLine, lerp, inertia, path, stickyNodes, voronoi;
   public color backgroundColor;
   public float attraction, mass;
   private float minAttraction = -1;
@@ -8,8 +8,8 @@ public class Options {
   public int exportFrameDelay, minExportFrameDelay = 1, maxExportFrameDelay = 300;
   public int lerpLevels;
   public int maxLerpLevels = 5;
-  public int minNumberOfNodes = 100;
-  public int maxNumberOfNodes = 500;
+  public int minNumberOfNodes = 500;
+  public int maxNumberOfNodes = 1000;
   public int numberOfNodes;
   
   Options() {
@@ -27,16 +27,19 @@ public class Options {
     exportFrameDelay = 1;
     inertia = false;//random(1) < 0.5;
     lerp = true;//random(1) < 0.5;
-    attraction = random(minAttraction, maxAttraction);
-    mass = 5000;
+    attraction = 0.005;//random(minAttraction, maxAttraction);
+    mass = 100;
     canvasStart = new PVector(-w*0.25, -h*0.25);
     canvasEnd = new PVector(w*1.25, h*1.25);
     lerpLevels = 1;//lerp ? 1 : (int)random(maxLerpLevels);
     numberOfNodes = int(random(minNumberOfNodes, maxNumberOfNodes));
-    voronoi = true;//random(1) < 0.5;
+    path = true;
+    stickyNodes = true;
+    voronoi = false;//true;//random(1) < 0.5;
     println("Attraction: " + attraction);
     println("Draw nodes: " + drawNodes);
     println("Draw line: " + drawLine);
     println("Number of nodes: " + numberOfNodes);
   }
 }
+

@@ -3,6 +3,7 @@ Controller controller;
 void setup() {
   size(500, 500);
   controller = new Controller(this);
+  background(0);
 }
 
 void draw() {

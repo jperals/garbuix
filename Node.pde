@@ -1,5 +1,6 @@
 public class Node {
-  public boolean inertia;
+  public boolean inertia,
+                 sticky;
   public color primaryColor,
                secondaryColor;
   public float attraction,
@@ -16,7 +17,7 @@ public class Node {
   Node(float x, float y) {
     acceleration = new PVector(0, 0);
     primaryColor = randomColor();
-    closestNode = this;
+    closestNode = null;
     secondaryColor = primaryColor;
     distanceToClosestNode = -1;
     position = new PVector(x, y);
@@ -26,7 +27,12 @@ public class Node {
   public void addTriangle(DelaunayTriangle t) {
     triangles.add(t);
   }
-  public void display() {}
+  public void display() {
+    pushStyle();
+    stroke(secondaryColor);
+    point(position.x, position.y);
+    popStyle();
+  }
   public void update() {
     triangles.clear();
     updatePosition();
@@ -39,20 +45,22 @@ public class Node {
     return dist(position.x, position.y, node.position.x, node.position.y);
   }
   public Node getClosestNode(ArrayList<Node> nodes) {
-    float minimumDistanceFound = -1;
-    Node closestNodeFound = null;
-    int numberOfNodes = nodes.size();
-    for(int i = 0; i < numberOfNodes; i++) {
-      Node node = nodes.get(i);
-      float distance = distanceTo(node);
-      if(node != this && (minimumDistanceFound == -1 || closestNodeFound == null || distance < minimumDistanceFound)) {
-        minimumDistanceFound = distance;
-        closestNodeFound = node;
+    if(!sticky || closestNode == null || !nodes.contains(closestNode)) {
+      float minimumDistanceFound = -1;
+      Node closestNodeFound = null;
+      int numberOfNodes = nodes.size();
+      for(int i = 0; i < numberOfNodes; i++) {
+        Node node = nodes.get(i);
+        float distance = distanceTo(node);
+        if(node != this && (minimumDistanceFound == -1 || closestNodeFound == null || distance < minimumDistanceFound)) {
+          minimumDistanceFound = distance;
+          closestNodeFound = node;
+        }
       }
+      closestNode = closestNodeFound;
+      distanceToClosestNode = minimumDistanceFound;
     }
-    closestNode = closestNodeFound;
-    distanceToClosestNode = minimumDistanceFound;
-    return closestNodeFound;
+    return closestNode;
   }
   public void drawVoronoi(boolean lerp, int lerpLevels) {
     Voronoi voronoi = new Voronoi(position);
@@ -107,17 +115,5 @@ public class Node {
       movement.mult(100);
       position.add(movement);
     }
-  }
-}
-
-class Point extends Node {
-  Point() {
-    super();
-  }
-  public void display() {
-    pushStyle();
-    stroke(secondaryColor);
-    point(position.x, position.y);
-    popStyle();
   }
 }

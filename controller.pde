@@ -32,6 +32,7 @@ public class Controller {
       node.attraction = options.attraction;
       node.inertia = options.inertia;
       node.mass = options.mass;
+      node.sticky = options.stickyNodes;
       nodes.add(node);
     }
   }
@@ -60,8 +61,12 @@ public class Controller {
         artifact.drawVoronoi(options.lerp, options.lerpLevels);
       }
     }
-   if(options.delaunay) {
+    if(options.delaunay) {
       delaunay.drawTriangles(triangles);
+    }
+    if(options.path) {
+      PickyPath path = new PickyPath(nodes);
+      path.drawAsLines();
     }
     for(int i = 0; i < nNodes; i++) {
       Node node = nodes.get(i);
@@ -79,6 +84,16 @@ public class Controller {
       node.update();
       node.position.x = constrain(node.position.x, options.canvasStart.x, options.canvasEnd.x);
       node.position.y = constrain(node.position.y, options.canvasStart.y, options.canvasEnd.y);
+    }
+  }
+  public void propagateOption(String option) {
+    if(option == "attraction") {
+      println("propagate attraction");
+      int nNodes = nodes.size();
+      for(int i = 0; i < nNodes; i++) {
+        Node node = nodes.get(i);
+        node.attraction = options.attraction;
+      }
     }
   }
   public void triggerAction(char key) {
@@ -112,7 +127,7 @@ public class Controller {
     }
     int nNodes = nodes.size();
     if(nNodes < options.numberOfNodes) {
-      nodes.add(new Point());
+      nodes.add(new Node());
     }
     else if(nNodes > options.numberOfNodes) {
       int index = (int)random(nNodes);

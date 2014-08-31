@@ -38,6 +38,7 @@ public class RemoteControlCommunication {
     if(msg.checkAddrPattern("/attraction")) {
       println("attraction: " + msg.get(0).floatValue());
       options.attraction = msg.get(0).floatValue();
+      controller.propagateOption("attraction");
       println("attraction: " + options.attraction);
     }
     if(msg.checkAddrPattern("/background")) {
