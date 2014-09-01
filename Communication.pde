@@ -98,8 +98,9 @@ public class RemoteControlCommunication {
       println("Lerp levels: " + options.lerpLevels);
     }
     else if(msg.checkAddrPattern("/trace")) {
-      options.clear = msg.get(0).intValue() == 0;
-      println("Clear: " + options.clear);
+      boolean clear = msg.get(0).intValue() == 0;
+      options.set("clear", clear);
+      println("Clear: " + clear);
     }
     else if(msg.checkAddrPattern("/voronoi")) {
       options.voronoi = msg.get(0).intValue() == 1;
@@ -125,7 +126,7 @@ public class RemoteControlCommunication {
     sendMessage("inertia", options.inertia, address);
     sendMessage("points", options.drawNodes, address);
     sendMessage("lines", options.drawLine, address);
-    sendMessage("trace", !options.clear, address);
+    sendMessage("trace", !options.getAsBoolean("clear"), address);
     sendMessage("delaunay", options.delaunay, address);
     sendMessage("voronoi", options.voronoi, address);
     sendMessage("polygons", options.lerpLevels, address);

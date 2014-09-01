@@ -37,7 +37,7 @@ public class Controller {
     }
   }
   public void draw() {
-    if(options.clear) {
+    if(options.getAsBoolean("clear")) {
       pushStyle();
       noStroke();
       fill(options.backgroundColor);

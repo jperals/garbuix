@@ -67,7 +67,8 @@ public class MutationActions {
     
     Command toggleClearCommand = new Command() {
       public void runCommand() {
-        options.clear = !options.clear;
+        boolean currentValue = options.getAsBoolean("clear");
+        options.set("clear", !currentValue);
       }
     };
     MutationAction toggleClearAction = new MutationAction("Toggle clear after each frame", "Toggle clear after each frame", toggleClearCommand);
