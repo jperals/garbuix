@@ -18,6 +18,7 @@ public class Controller {
     exportingGif = false;
     delaunay = new DelaunayTriangulation();
     options = new Options();
+    initializeOptions();
     communication = new RemoteControlCommunication(this, options);
     nodes = new ArrayList<Node>();
     triangulate = new Triangulate();
@@ -27,30 +28,31 @@ public class Controller {
     actions = new MutationActions(options);
   }
   private void createNodes() {
-    for(int i = 0; i < options.numberOfNodes; i++) {
+    int nNodes = options.getAsInt("nodes");
+    for(int i = 0; i < nNodes; i++) {
       Node node = new Node();
-      node.attraction = options.attraction;
-      node.inertia = options.inertia;
-      node.mass = options.mass;
-      node.sticky = options.stickyNodes;
+      node.attraction = options.getAsFloat("attraction");
+      node.inertia = options.getAsBoolean("inertia");
+      node.mass = options.getAsInt("mass");
+      node.sticky = options.getAsBoolean("sticky");
       nodes.add(node);
     }
   }
   public void draw() {
-    if(options.getAsBoolean("clear")) {
+    if(!options.getAsBoolean("trace")) {
       pushStyle();
       noStroke();
       fill(options.backgroundColor);
       rect(0, 0, width, height); // The background() function doesn't seem to allow the use of alpha, so we draw a rectangle instead
       popStyle();
     }
-    if(options.delaunay || options.voronoi) {
+    if(options.getAsBoolean("delaunay") || options.getAsBoolean("voronoi")) {
       triangles = triangulate.triangulate(nodes);
     }
     int nNodes = nodes.size();
     for(int i = 0; i < nNodes; i++) {
       Node artifact = nodes.get(i);
-      if(options.voronoi ) {
+      if(options.getAsBoolean("voronoi") ) {
         int nTriangles = triangles.size();
         for (int j = 0; j <nTriangles; j++) {
           DelaunayTriangle triangle = (DelaunayTriangle)triangles.get(j);
@@ -61,20 +63,20 @@ public class Controller {
         artifact.drawVoronoi(options.lerp, options.lerpLevels);
       }
     }
-    if(options.delaunay) {
+    if(options.getAsBoolean("delaunay")) {
       delaunay.drawTriangles(triangles);
     }
-    if(options.path) {
+    if(options.getAsBoolean("path")) {
       PickyPath path = new PickyPath(nodes);
       path.drawAsLines();
     }
     for(int i = 0; i < nNodes; i++) {
       Node node = nodes.get(i);
       Node closestNode = node.getClosestNode(nodes);
-      if(options.drawNodes) {
+      if(options.getAsBoolean("points")) {
         node.display();
       }
-      if(options.drawLine && closestNode != null) {
+      if(options.getAsBoolean("lines") && closestNode != null) {
         color lineColor = lerpColor(node.primaryColor, closestNode.primaryColor, 0.5);
         pushStyle();
         stroke(lineColor);
@@ -92,7 +94,7 @@ public class Controller {
       int nNodes = nodes.size();
       for(int i = 0; i < nNodes; i++) {
         Node node = nodes.get(i);
-        node.attraction = options.attraction;
+        node.attraction = options.getAsFloat("attraction");
       }
     }
   }
@@ -126,10 +128,10 @@ public class Controller {
       pngSequenceMaker.saveCurrentFrame();
     }
     int nNodes = nodes.size();
-    if(nNodes < options.numberOfNodes) {
+    if(nNodes < options.getAsInt("nodes")) {
       nodes.add(new Node());
     }
-    else if(nNodes > options.numberOfNodes) {
+    else if(nNodes > options.getAsInt("nodes")) {
       int index = (int)random(nNodes);
       constrain(index, 0, nNodes - 1);
       nodes.remove(index);
@@ -177,5 +179,20 @@ public class Controller {
     if(exportingPng) {
       startPngExport();
     }
+  }
+  private void initializeOptions() {
+    options.set("attraction", 0.005);
+    options.set("clear", false);
+    options.set("delaunay", false);
+    options.set("inertia", false);
+    options.set("lines", false);
+    options.set("mass", 100);
+    options.set("nodes", 1000);
+    options.set("path", true);
+    options.set("points", false);
+    options.set("polygons", 2);
+    options.set("sticky", false);
+    options.set("trace", false);
+    options.set("voronoi", false);
   }
 }

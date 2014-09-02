@@ -49,8 +49,8 @@ public class MutationActions {
     
     Command attractionIncreaseCommand = new Command() {
       public void runCommand() {
-        options.attraction += 0.1;
-        println("Attraction: " + options.attraction);
+        options.set("attraction", options.getAsFloat("attraction") + 0.1);
+        println("Attraction: " + options.get("attraction"));
       }
     };
     MutationAction attractionIncreaseAction = new MutationAction("Increase attraction", "Increase attraction between nodes", attractionIncreaseCommand);
@@ -58,8 +58,8 @@ public class MutationActions {
     
     Command attractionDecreaseCommand = new Command() {
       public void runCommand() {
-        options.attraction -= 0.1;
-        println("Attraction: " + options.attraction);
+        options.set("attraction", options.getAsFloat("attraction") - 0.1);
+        println("Attraction: " + options.get("attraction"));
       }
     };
     MutationAction attractionDecreaseAction = new MutationAction("Decrease attraction", "Decrease attraction between nodes", attractionDecreaseCommand);
@@ -76,7 +76,7 @@ public class MutationActions {
     
     Command toggleDelaunayCommand = new Command() {
       public void runCommand() {
-        options.delaunay = !options.delaunay;
+        options.toggle("delaunay");
       }
     };
     MutationAction toggleDelaunayAction = new MutationAction("Toggle Delaunay diagram", "Toggle the visualization of the Delaunay diagram", toggleDelaunayCommand);
@@ -84,7 +84,7 @@ public class MutationActions {
     
     Command toggleLineCommand = new Command() {
       public void runCommand() {
-        options.drawLine = !options.drawLine;
+        options.toggle("lines");
       }
     };
     MutationAction toggleLineAction = new MutationAction("Toggle line", "Toggle the visualization of one line from each node to its closest neighbour", toggleLineCommand);
@@ -92,7 +92,7 @@ public class MutationActions {
     
     Command numberOfNodesIncreaseCommand = new Command() {
       public void runCommand() {
-        options.numberOfNodes += 1;
+        options.set("nodes", options.getAsInt("nodes") + 1);
       }
     };
     MutationAction numberOfNodesIncreaseAction = new MutationAction("Increase number of nodes", "Increase number of nodes", numberOfNodesIncreaseCommand);
@@ -100,7 +100,7 @@ public class MutationActions {
     
     Command numberOfNodesDecreaseCommand = new Command() {
       public void runCommand() {
-        options.numberOfNodes -= 1;
+        options.set("nodes", options.getAsInt("nodes") - 1);
       }
     };
     MutationAction numberOfArticatsDecreaseAction = new MutationAction("Decrease number of nodes", "Decrease number of nodes", numberOfNodesDecreaseCommand);
@@ -108,7 +108,7 @@ public class MutationActions {
     
     Command toggleVoronoiCommand = new Command() {
       public void runCommand() {
-        options.voronoi = !options.voronoi;
+        options.toggle("voronoi");
       }
     };
     MutationAction toggleVoronoiAction = new MutationAction("Toggle Voronoi diagram", "Toggle the visualization of the Voronoi diagram", toggleVoronoiCommand);

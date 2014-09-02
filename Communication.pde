@@ -31,17 +31,7 @@ public class RemoteControlCommunication {
     if(msg.addrPattern().equals("/connect") || !remoteAddressList.contains(ipAddress, broadcastPort)) {
       connect(ipAddress);
     }
-    if(msg.checkAddrPattern("/nodes")) {
-      options.numberOfNodes = (int)msg.get(0).intValue();
-      println("Number of nodes: " + options.numberOfNodes);
-    }
-    if(msg.checkAddrPattern("/attraction")) {
-      println("attraction: " + msg.get(0).floatValue());
-      options.attraction = msg.get(0).floatValue();
-      controller.propagateOption("attraction");
-      println("attraction: " + options.attraction);
-    }
-    if(msg.checkAddrPattern("/background")) {
+    else if(msg.checkAddrPattern("/background")) {
       float red = msg.get(0).floatValue();
       float green = msg.get(1).floatValue();
       float blue = msg.get(2).floatValue();
@@ -62,55 +52,37 @@ public class RemoteControlCommunication {
       }
       println("Export frames: " + capture);
     }
-    else if(msg.checkAddrPattern("/delaunay")) {
-      options.delaunay = msg.get(0).intValue() == 1;
-      println("Draw Delaunay triangulation: " + options.delaunay);
-    }
-    else if(msg.checkAddrPattern("/lines")) {
-      try {
-        options.drawLine = msg.get(0).intValue() == 1;
-      }
-      catch(Exception exception) {
-        options.drawLine = msg.get(0).floatValue() == 1;
-      }
-      println("Draw lines: " + options.drawLine);
-    }
-    else if(msg.checkAddrPattern("/points")) {
-      try {
-        options.drawNodes = msg.get(0).intValue() == 1;
-      }
-      catch(Exception exception) {
-        options.drawNodes = msg.get(0).floatValue() == 1;
-      }
-      println("Draw nodes: " + options.drawNodes);
-    }
     else if(msg.checkAddrPattern("/delay")) {
       options.exportFrameDelay = (int)msg.get(0).floatValue();
       println("Delay between capture frames: " + options.exportFrameDelay);
-    }
-    else if(msg.checkAddrPattern("/inertia")) {
-      options.inertia = msg.get(0).intValue() == 1;
-      println("Inertia: " + options.inertia);
-    }
-    else if(msg.checkAddrPattern("/polygons")) {
-      options.lerpLevels = (int)msg.get(0).intValue();
-      options.lerp = options.lerpLevels > 0;  
-      println("Lerp levels: " + options.lerpLevels);
-    }
-    else if(msg.checkAddrPattern("/trace")) {
-      boolean clear = msg.get(0).intValue() == 0;
-      options.set("clear", clear);
-      println("Clear: " + clear);
-    }
-    else if(msg.checkAddrPattern("/voronoi")) {
-      options.voronoi = msg.get(0).intValue() == 1;
-      println("Draw Voronoi tesselation: " + options.voronoi);
     }
     else if(msg.checkAddrPattern("/reset")) {
       controller.requestReset();
     }
     else {
-      return;
+      String addressPattern = msg.addrPattern();
+      String variableName = addressPattern.substring(1, addressPattern.length());
+      try {
+        Boolean value = msg.get(0).booleanValue();
+        options.set(variableName, value);
+      }
+      catch(Exception exception1) {
+        try {
+          int value = msg.get(0).intValue();
+          options.set(variableName, value);
+        }
+        catch(Exception exception2) {
+          try {
+            float value = msg.get(0).floatValue();
+            options.set(variableName, value);
+          }
+          catch(Exception exception3) {
+            println(exception3);
+          }
+        }
+      }
+      //println(variableName + ": " + variableName);
+      controller.propagateOption(variableName);
     }
     int nAddresses = remoteAddressList.size();
     for(int i = 0; i < nAddresses; i++) {
@@ -121,14 +93,14 @@ public class RemoteControlCommunication {
     }
   }
   void sendAllTo(NetAddress address) {
-    sendMessage("nodes", options.numberOfNodes, address);
-    sendMessage("attraction", options.attraction, address);
-    sendMessage("inertia", options.inertia, address);
-    sendMessage("points", options.drawNodes, address);
-    sendMessage("lines", options.drawLine, address);
-    sendMessage("trace", !options.getAsBoolean("clear"), address);
-    sendMessage("delaunay", options.delaunay, address);
-    sendMessage("voronoi", options.voronoi, address);
+    sendMessage("nodes", options.getAsInt("nodes"), address);
+    sendMessage("attraction", options.getAsBoolean("attraction"), address);
+    sendMessage("inertia", options.getAsBoolean("inertia"), address);
+    sendMessage("points", options.getAsBoolean("points"), address);
+    sendMessage("lines", options.getAsBoolean("lines"), address);
+    sendMessage("trace", options.getAsBoolean("trace"), address);
+    sendMessage("delaunay", options.getAsBoolean("delaunay"), address);
+    sendMessage("voronoi", options.getAsBoolean("voronoi"), address);
     sendMessage("polygons", options.lerpLevels, address);
     sendMessage("delay", options.exportFrameDelay, address);
     sendColorMessage("background", options.backgroundColor, address);
