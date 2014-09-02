@@ -89,12 +89,24 @@ public class Controller {
     }
   }
   public void propagateOption(String option) {
-    if(option == "attraction") {
-      println("propagate attraction");
+    println("propagate " + option);
+    if(option.equals("attraction")) {
+      float value = options.getAsFloat("attraction");
+      println(value);
       int nNodes = nodes.size();
       for(int i = 0; i < nNodes; i++) {
         Node node = nodes.get(i);
-        node.attraction = options.getAsFloat("attraction");
+        node.attraction = value;
+      }
+    }
+    else if(option.equals("sticky")) {
+      println("propagate stickiness");
+      boolean value = options.getAsBoolean("sticky");
+      println(value);
+      int nNodes = nodes.size();
+      for(int i = 0; i < nNodes; i++) {
+        Node node = nodes.get(i);
+        node.sticky = value;
       }
     }
   }
