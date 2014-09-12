@@ -20,10 +20,10 @@ public class RemoteControlCommunication {
   private void connect(String ipAddress) {
     NetAddress newAddress = new NetAddress(ipAddress, broadcastPort);
     remoteAddressList.add(newAddress);
+    sendAllTo(newAddress);
     OscMessage msg = new OscMessage("/connect");
     oscP5.send(msg, newAddress);
     println("Connected with " + ipAddress + ".");
-    sendAllTo(newAddress);
   }
   private void oscEvent(OscMessage msg) {
     println("Message recieved from controller");
@@ -55,6 +55,10 @@ public class RemoteControlCommunication {
     else if(msg.checkAddrPattern("/delay")) {
       options.exportFrameDelay = (int)msg.get(0).floatValue();
       println("Delay between capture frames: " + options.exportFrameDelay);
+    }
+    else if(msg.checkAddrPattern("/lerpLevels")) {
+      options.lerpLevels = (int)msg.get(0).intValue();
+      println("lerp levels: " + options.lerpLevels);
     }
     else if(msg.checkAddrPattern("/reset")) {
       controller.requestReset();

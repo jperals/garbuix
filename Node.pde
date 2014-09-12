@@ -27,7 +27,7 @@ public class Node {
   public void addTriangle(DelaunayTriangle t) {
     triangles.add(t);
   }
-  public void display() {
+  public void drawPoint() {
     pushStyle();
     stroke(secondaryColor);
     point(position.x, position.y);

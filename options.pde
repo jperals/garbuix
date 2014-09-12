@@ -19,7 +19,7 @@ public class Options {
 
   Options(int w, int h) {
     options = new HashMap<String, Option>();
-    backgroundColor = color(random(0, 127), random(0, 127), random(0, 127));
+    backgroundColor = color(random(0, 63), random(0, 63), random(0, 63));
     minExportFrameDelay = 1;
     maxExportFrameDelay = 300;
     exportFrameDelay = 1;

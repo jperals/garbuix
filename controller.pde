@@ -37,6 +37,10 @@ public class Controller {
       node.sticky = options.getAsBoolean("sticky");
       nodes.add(node);
     }
+    for(int i = 0; i < nNodes; i++) {
+      Node node = nodes.get(i);
+      Node closestNode = node.getClosestNode(nodes);
+    }
   }
   public void draw() {
     if(!options.getAsBoolean("trace")) {
@@ -74,18 +78,15 @@ public class Controller {
       Node node = nodes.get(i);
       Node closestNode = node.getClosestNode(nodes);
       if(options.getAsBoolean("points")) {
-        node.display();
+        node.drawPoint();
       }
-      if(options.getAsBoolean("lines") && closestNode != null) {
+      if(options.getAsBoolean("closest") && closestNode != null) {
         color lineColor = lerpColor(node.primaryColor, closestNode.primaryColor, 0.5);
         pushStyle();
         stroke(lineColor);
         line(node.position.x, node.position.y, closestNode.position.x, closestNode.position.y);
         popStyle();
       }
-      node.update();
-      node.position.x = constrain(node.position.x, options.canvasStart.x, options.canvasEnd.x);
-      node.position.y = constrain(node.position.y, options.canvasStart.y, options.canvasEnd.y);
     }
   }
   public void propagateOption(String option) {
@@ -147,6 +148,25 @@ public class Controller {
       int index = (int)random(nNodes);
       constrain(index, 0, nNodes - 1);
       nodes.remove(index);
+      nNodes--;
+    }
+    for(int i = 0; i < nNodes; i++) {
+      Node node = nodes.get(i);
+      node.update();
+      //node.position.x = constrain(node.position.x, options.canvasStart.x, options.canvasEnd.x);
+      //node.position.y = constrain(node.position.y, options.canvasStart.y, options.canvasEnd.y);
+      while(node.position.x < options.canvasStart.x) {
+        node.position.x += options.canvasEnd.x - options.canvasStart.x;
+      }
+      while(node.position.x > options.canvasEnd.x) {
+        node.position.x -= options.canvasEnd.x - options.canvasStart.x;
+      }
+      while(node.position.y < options.canvasStart.y) {
+        node.position.y += options.canvasEnd.y - options.canvasStart.y;
+      }
+      while(node.position.y > options.canvasEnd.y) {
+        node.position.y -= options.canvasEnd.y - options.canvasStart.y;
+      }
     }
   }
   private String getFormattedDate() {
@@ -193,18 +213,19 @@ public class Controller {
     }
   }
   private void initializeOptions() {
-    options.set("attraction", 0.005);
-    options.set("clear", false);
     options.set("delaunay", false);
     options.set("inertia", false);
-    options.set("lines", false);
-    options.set("mass", 100);
-    options.set("nodes", 1000);
-    options.set("path", true);
+    options.set("closest", false);
+    options.set("path", false);
     options.set("points", false);
-    options.set("polygons", 2);
     options.set("sticky", false);
     options.set("trace", false);
     options.set("voronoi", false);
-  }
+    options.set("attraction", 0.05);
+    options.set("mass", 1000);
+    options.set("nodes", 1000);
+    options.set("polygons", 2);
+    options.set("minNodes", 300);
+    options.set("maxNodes", 2000);
+ }
 }
