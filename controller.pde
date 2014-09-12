@@ -68,7 +68,7 @@ public class Controller {
       }
     }
     if(options.getAsBoolean("delaunay")) {
-      delaunay.drawTriangles(triangles);
+      delaunay.drawTriangles(triangles, options.getAsBoolean("fillTriangles"));
     }
     if(options.getAsBoolean("path")) {
       PickyPath path = new PickyPath(nodes);
@@ -214,6 +214,7 @@ public class Controller {
   }
   private void initializeOptions() {
     options.set("delaunay", false);
+    options.set("fillTriangles", true);
     options.set("inertia", false);
     options.set("closest", false);
     options.set("path", false);
