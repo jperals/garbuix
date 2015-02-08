@@ -91,10 +91,10 @@ public class Controller {
   }
   public void propagateOption(String option) {
     println("propagate " + option);
+    int nNodes = nodes.size();
     if(option.equals("attraction")) {
       float value = options.getAsFloat("attraction");
       println(value);
-      int nNodes = nodes.size();
       for(int i = 0; i < nNodes; i++) {
         Node node = nodes.get(i);
         node.attraction = value;
@@ -104,10 +104,33 @@ public class Controller {
       println("propagate stickiness");
       boolean value = options.getAsBoolean("sticky");
       println(value);
-      int nNodes = nodes.size();
       for(int i = 0; i < nNodes; i++) {
         Node node = nodes.get(i);
         node.sticky = value;
+      }
+    }
+    else {
+      for(int i = 0; i < nNodes; i++) {
+        Node node = nodes.get(i);
+        try {
+          Boolean value = options.getAsBoolean(option);
+          node.options.set(option, value);
+        }
+        catch(Exception exception1) {
+          try {
+            int value = options.getAsInt(option);
+            node.options.set(option, value);
+          }
+          catch(Exception exception2) {
+            try {
+              float value = options.getAsFloat(option);
+              node.options.set(option, value);
+            }
+            catch(Exception exception3) {
+              println(exception3);
+            }
+          }
+        }
       }
     }
   }
