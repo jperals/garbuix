@@ -46,7 +46,7 @@ public class Options {
             value = options.get(s).getAsString() == "1";
           }
           catch(Exception e4) {
-            println(e4);
+            //println(e4);
             value = false;
           }
         }
