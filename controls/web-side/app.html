@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<title>Garbuix</title>
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css">
+<link rel="stylesheet" href="styles.css">
+<script src="http://127.0.0.1:8081/socket.io/socket.io.js"></script>
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angularjs/angular.js"></script>
+<script src="bower_components/angular-ui-bootstrap/dist/ui-bootstrap-tpls-0.11.0.js"></script>
+<script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+<script src="bower_components/angular-bootstrap-slider/slider.js"></script>
+<script src="app/app.js"></script>
+</head>
+
+<body>
+
+<div ng-app="tangledControlsApp">
+    <div class="form-inline" ng-controller="tangledControlsCtrl">
+        <div>
+            <div class="form-group">
+                <label>Emit from</label>
+                <input type="text" ng-model="config.client.host" class="form-control" size="7">
+                :
+                <input type="text" ng-model="config.client.port" class="form-control" size="4">
+            </div>
+            <div class="form-group">
+                <label>Listen to</label>
+                <input type="text" ng-model="config.server.host" class="form-control" size="7">
+                :
+                <input type="text" ng-model="config.server.port" class="form-control" size="4">
+            </div>
+            <button type="button" class="btn" ng-class="{'btn-success': connected}" ng-click="connect()">
+                <span ng-if="!connected">Connect</span>
+                <span ng-if="connected">Connected</span>
+            </button>
+        </div>
+        <div ng-show="connected">
+            <hr>
+            <tangled-button action="reset"></tangled-button>
+            <hr>
+            <tangled-toggle variable="points"></tangled-toggle>
+            <tangled-toggle variable="closest"></tangled-toggle>
+            <tangled-toggle variable="voronoi"></tangled-toggle>
+            <tangled-toggle variable="path"></tangled-toggle>
+            <tangled-toggle variable="lerpColor"></tangled-toggle>
+            <hr>
+            <tangled-toggle variable="delaunay"></tangled-toggle>
+            <tangled-toggle variable="fillTriangles" ng-show="options.delaunay"></tangled-toggle>
+            <hr>
+            <tangled-toggle variable="trace"></tangled-toggle>
+            <tangled-toggle variable="sticky"></tangled-toggle>
+            <tangled-toggle variable="inertia"></tangled-toggle>
+            <hr>
+            <tangled-slider variable="attraction" min="{{options.minAttraction}}" max="{{options.maxAttraction}}" initial="0" step="0.01"></tangled-slider>
+            <tangled-slider variable="nodes" min="{{options.minNodes}}" max="{{options.maxNodes}}" initial="{{(options.minNodes + options.maxNodes) / 2}}" step="1"></tangled-slider>
+            <tangled-slider variable="polygons" ng-show="options.voronoi" min="{{options.minLerpLevels}}" max="{{options.maxLerpLevels}}" initial="1" step="1"></tangled-slider>
+        </div>
+    </div>
+</div>
+
+</body> </html>

@@ -1,0 +1,27 @@
+{
+  "name": "tangled-controls",
+  "version": "0.1",
+  "authors": [
+    "Joan Perals Tresserra <j.pertres@gmail.com>"
+  ],
+  "description": "Controls for \"Tangled\" project",
+  "main": "web-side/index.html",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "generative"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap-slider": "~0.0.5"
+  }
+}

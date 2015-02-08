@@ -1,0 +1,18 @@
+body {
+    margin: 1em;
+}
+
+label {
+    font-weight: normal;
+}
+
+tangled-slider {
+    display: block;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+tangled-slider label {
+    display: inline-block;
+    width: 80px;
+}
