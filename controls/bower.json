@@ -1,10 +1,10 @@
 {
-  "name": "tangled-controls",
+  "name": "Garbuix",
   "version": "0.1",
   "authors": [
     "Joan Perals Tresserra <j.pertres@gmail.com>"
   ],
-  "description": "Controls for \"Tangled\" project",
+  "description": "Controls for the \"Garbuix\" project",
   "main": "web-side/index.html",
   "moduleType": [
     "node"
@@ -22,6 +22,10 @@
     "tests"
   ],
   "dependencies": {
-    "angular-bootstrap-slider": "~0.0.5"
+    "angular-bootstrap-slider": "~0.0.5",
+    "angular-bootstrap": "~0.13.3"
+  },
+  "resolutions": {
+    "angular": "~1.2.16"
   }
 }
