@@ -1,18 +1,20 @@
 # Garbuix
 
-![Screenshot](screenshots/screenshot-2015-02-08.14.34.21-001261.png)
-
 ## A visual tool for the exploration of generative visuals
 
-We have a set of points randomly distributed on a 2D plane. Just by combining a set of rules on the way in which they should move, interact with each other and be displayed, we go through a rich and diverse set of visual experiences.
+![Screenshot](screenshots/Captura de 2015-08-30 12-10-52.png)
+
+Garbuix is the combination of a Processing sketch with a web-based user interface to explore visually interesting behaviours of 2D systems.
 
 ## Requirements
 
-- [Processing](hhtp://processing.org)
-- [NodeJS](http://nodejs.org)
-- A web server like [http-server](https://github.com/nodeapps/http-server)
+- [Processing](http://processing.org) 2 with oscP5 and gifAnimation libraries
+- [NodeJS](http://nodejs.org) and [npm](https://www.npmjs.com/)
+- Any web server, let's say [http-server](https://github.com/nodeapps/http-server)
 
 ## Quick start
+
+### 1. Run the web bridge
 
 Run these commands on a terminal:
 ```
@@ -21,17 +23,28 @@ $ npm install
 $ bower install
 $ node bridge.js
 ```
-Open `processing/garbuix.pde` with Processing and run it.
+
+### 2. Run the Processing sketch
+
+Open `processing/garbuix.pde` with Processing and run it. You should get just a boring dark blank window for now.
+
+### 3. Run the web interface
 
 On another terminal, run:
 ```
 $ cd controls/web-side
 $ http-server .
 ```
-Now visit `http://localhost:8080/app.html` to control the running Processing sketch.
-Press 's' from the Processing sketch window at any time to take a screenshot.
+
+### 4. Done!
+
+Visit [http://localhost:8080](http://localhost:8080) to control the running Processing sketch.
+
+Press `s` from the Processing sketch window at any time to take a screenshot. You can also export animated GIFs by pressing `g` to start the capture and `g` again to stop it.
 
 ## Example screenshots
+
+![Screenshot](screenshots/screenshot-2015-02-08.14.34.21-001261.png)
 
 ![Screenshot](screenshots/screenshot-2014-08-18.22.49.21-000378_x2.png)
 
