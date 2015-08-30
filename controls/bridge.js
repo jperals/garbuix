@@ -21,7 +21,9 @@ io.sockets.on('connection', function (socket) {
   });
   socket.on('set', function(variableName, value) {
     console.log(variableName + ': ' + value);
-    oscClient.send('/' + variableName, value); 
+    if(oscClient) {
+      oscClient.send('/' + variableName, value);
+    }
   });
   socket.on('connect', function() {
     oscClient.send('/connect');
